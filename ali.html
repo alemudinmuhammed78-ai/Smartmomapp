@@ -1,0 +1,188 @@
+<p dir="ltr">&lt;!DOCTYPE html&gt;<br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&lt;meta charset="UTF-8"&gt;<br>
+&lt;title&gt;Global Learning Platform&lt;/title&gt;</p>
+<p dir="ltr">&lt;style&gt;<br>
+body { font-family: Arial; margin:0; background:#f5f5f5; }<br>
+header { background:#111; color:#fff; padding:15px; text-align:center; }<br>
+nav { display:flex; background:#222; }<br>
+nav button { flex:1; padding:10px; color:white; background:none; border:none; }</p>
+<p dir="ltr">.section { display:none; padding:15px; }<br>
+.active { display:block; }</p>
+<p dir="ltr">.card {<br>
+&nbsp; background:white;<br>
+&nbsp; padding:15px;<br>
+&nbsp; margin:10px 0;<br>
+&nbsp; border-radius:10px;<br>
+}</p>
+<p dir="ltr">input, textarea {<br>
+&nbsp; width:100%;<br>
+&nbsp; padding:10px;<br>
+&nbsp; margin:5px 0;<br>
+}</p>
+<p dir="ltr">.lang {<br>
+&nbsp; position:fixed;<br>
+&nbsp; top:10px;<br>
+&nbsp; right:10px;<br>
+}<br>
+&lt;/style&gt;<br>
+&lt;/head&gt;</p>
+<p dir="ltr">&lt;body&gt;</p>
+<p dir="ltr">&lt;header&gt;&#127757; Global Learning Platform&lt;/header&gt;</p>
+<p dir="ltr">&lt;div class="lang"&gt;<br>
+&nbsp; &lt;button onclick="setLang('en')"&gt;EN&lt;/button&gt;<br>
+&nbsp; &lt;button onclick="setLang('am')"&gt;&#4768;&#4635;&lt;/button&gt;<br>
+&lt;/div&gt;</p>
+<p dir="ltr">&lt;nav&gt;<br>
+&lt;button onclick="show('auth')"&gt;Login&lt;/button&gt;<br>
+&lt;button onclick="show('home')"&gt;Home&lt;/button&gt;<br>
+&lt;button onclick="show('courses')"&gt;Courses&lt;/button&gt;<br>
+&lt;button onclick="show('dashboard')"&gt;Dashboard&lt;/button&gt;<br>
+&lt;button onclick="show('admin')"&gt;Admin&lt;/button&gt;<br>
+&lt;/nav&gt;</p>
+<p dir="ltr">&lt;!-- AUTH --&gt;<br>
+&lt;div id="auth" class="section active"&gt;<br>
+&nbsp; &lt;div class="card"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;h3 id="loginText"&gt;Login / Signup&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;input id="email" placeholder="Email"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;input id="pass" type="password" placeholder="Password"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;button onclick="signup()"&gt;Signup&lt;/button&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;button onclick="login()"&gt;Login&lt;/button&gt;<br>
+&nbsp; &lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p dir="ltr">&lt;!-- HOME --&gt;<br>
+&lt;div id="home" class="section"&gt;<br>
+&nbsp; &lt;h2&gt;&#128218; Notes&lt;/h2&gt;<br>
+&nbsp; &lt;div id="notes"&gt;&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p dir="ltr">&lt;!-- COURSES --&gt;<br>
+&lt;div id="courses" class="section"&gt;<br>
+&nbsp; &lt;h2&gt;&#127891; Courses&lt;/h2&gt;<br>
+&nbsp; &lt;div id="courseList"&gt;&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p dir="ltr">&lt;!-- DASHBOARD --&gt;<br>
+&lt;div id="dashboard" class="section"&gt;<br>
+&nbsp; &lt;h2&gt;&#128202; My Courses&lt;/h2&gt;<br>
+&nbsp; &lt;div id="myCourses"&gt;&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p dir="ltr">&lt;!-- ADMIN --&gt;<br>
+&lt;div id="admin" class="section"&gt;<br>
+&nbsp; &lt;h2&gt;&#129489;&#8205;&#128188; Admin Panel&lt;/h2&gt;</p>
+<p dir="ltr">&nbsp; &lt;div class="card"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;h3&gt;Add Course&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;input id="courseTitle" placeholder="Course title"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;input id="coursePrice" placeholder="Price"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;button onclick="addCourse()"&gt;Add Course&lt;/button&gt;<br>
+&nbsp; &lt;/div&gt;</p>
+<p dir="ltr">&nbsp; &lt;div class="card"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;h3&gt;Add Note&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;textarea id="noteText"&gt;&lt;/textarea&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;button onclick="addNote()"&gt;Add Note&lt;/button&gt;<br>
+&nbsp; &lt;/div&gt;</p>
+<p dir="ltr">&nbsp; &lt;div class="card"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;h3&gt;Upload Video&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;input type="file" onchange="uploadVideo(this.files[0])"&gt;<br>
+&nbsp; &lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p dir="ltr">&lt;!-- Firebase --&gt;<br>
+&lt;script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"&gt;&lt;/script&gt;<br>
+&lt;script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"&gt;&lt;/script&gt;<br>
+&lt;script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"&gt;&lt;/script&gt;<br>
+&lt;script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"&gt;&lt;/script&gt;</p>
+<p dir="ltr">&lt;script&gt;<br>
+// &#128293; PUT YOUR FIREBASE CONFIG<br>
+const firebaseConfig = {<br>
+&nbsp; apiKey: "YOUR_KEY",<br>
+&nbsp; authDomain: "YOUR_PROJECT.firebaseapp.com",<br>
+&nbsp; projectId: "YOUR_PROJECT"<br>
+};</p>
+<p dir="ltr">firebase.initializeApp(firebaseConfig);</p>
+<p dir="ltr">const ADMIN_EMAIL = "youradmin@gmail.com";</p>
+<p dir="ltr">// NAV<br>
+function show(id){<br>
+&nbsp; document.querySelectorAll('.section').forEach(s=&gt;s.classList.remove('active'));<br>
+&nbsp; document.getElementById(id).classList.add('active');<br>
+}</p>
+<p dir="ltr">// AUTH<br>
+function signup(){<br>
+&nbsp; firebase.auth().createUserWithEmailAndPassword(email.value, pass.value);<br>
+}</p>
+<p dir="ltr">function login(){<br>
+&nbsp; firebase.auth().signInWithEmailAndPassword(email.value, pass.value)<br>
+&nbsp; .then(()=&gt;{ show('home'); loadMyCourses(); });<br>
+}</p>
+<p dir="ltr">// ADMIN CHECK<br>
+firebase.auth().onAuthStateChanged(user=&gt;{<br>
+&nbsp; if(user &amp;&amp; user.email===ADMIN_EMAIL){<br>
+&nbsp;&nbsp;&nbsp; document.getElementById("admin").style.display="block";<br>
+&nbsp; } else {<br>
+&nbsp;&nbsp;&nbsp; document.getElementById("admin").style.display="none";<br>
+&nbsp; }<br>
+});</p>
+<p dir="ltr">// NOTES<br>
+function addNote(){<br>
+&nbsp; firebase.firestore().collection("notes").add({content:noteText.value});<br>
+}</p>
+<p dir="ltr">firebase.firestore().collection("notes").onSnapshot(snap=&gt;{<br>
+&nbsp; notes.innerHTML="";<br>
+&nbsp; snap.forEach(doc=&gt;{<br>
+&nbsp;&nbsp;&nbsp; notes.innerHTML += "&lt;div class='card'&gt;"+doc.data().content+"&lt;/div&gt;";<br>
+&nbsp; });<br>
+});</p>
+<p dir="ltr">// COURSES<br>
+function addCourse(){<br>
+&nbsp; firebase.firestore().collection("courses").add({<br>
+&nbsp;&nbsp;&nbsp; title: courseTitle.value,<br>
+&nbsp;&nbsp;&nbsp; price: coursePrice.value<br>
+&nbsp; });<br>
+}</p>
+<p dir="ltr">firebase.firestore().collection("courses").onSnapshot(snap=&gt;{<br>
+&nbsp; courseList.innerHTML="";<br>
+&nbsp; snap.forEach(doc=&gt;{<br>
+&nbsp;&nbsp;&nbsp; let d=doc.data();<br>
+&nbsp;&nbsp;&nbsp; courseList.innerHTML += `<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="card"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3&gt;${d.title}&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;$${d.price}&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;button onclick="buy('${doc.id}')"&gt;Buy&lt;/button&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/div&gt;`;<br>
+&nbsp; });<br>
+});</p>
+<p dir="ltr">// BUY<br>
+function buy(id){<br>
+&nbsp; let uid=firebase.auth().currentUser.uid;<br>
+&nbsp; firebase.firestore().collection("users")<br>
+&nbsp; .doc(uid).collection("purchases").doc(id)<br>
+&nbsp; .set({paid:true});<br>
+&nbsp; alert("Purchased!");<br>
+}</p>
+<p dir="ltr">// DASHBOARD<br>
+function loadMyCourses(){<br>
+&nbsp; let uid=firebase.auth().currentUser.uid;<br>
+&nbsp; firebase.firestore()<br>
+&nbsp; .collection("users").doc(uid)<br>
+&nbsp; .collection("purchases")<br>
+&nbsp; .onSnapshot(snap=&gt;{<br>
+&nbsp;&nbsp;&nbsp; myCourses.innerHTML="";<br>
+&nbsp;&nbsp;&nbsp; snap.forEach(doc=&gt;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myCourses.innerHTML += "&lt;div class='card'&gt;Course Purchased&lt;/div&gt;";<br>
+&nbsp;&nbsp;&nbsp; });<br>
+&nbsp; });<br>
+}</p>
+<p dir="ltr">// VIDEO<br>
+function uploadVideo(file){<br>
+&nbsp; let ref=firebase.storage().ref("videos/"+file.name);<br>
+&nbsp; ref.put(file);<br>
+}</p>
+<p dir="ltr">// LANGUAGE<br>
+function setLang(lang){<br>
+&nbsp; if(lang==="am"){<br>
+&nbsp;&nbsp;&nbsp; document.getElementById("loginText").innerText="&#4877;&#4707; / &#4632;&#4632;&#4829;&#4872;&#4709;";<br>
+&nbsp; } else {<br>
+&nbsp;&nbsp;&nbsp; document.getElementById("loginText").innerText="Login / Signup";<br>
+&nbsp; }<br>
+}<br>
+&lt;/script&gt;</p>
+<p dir="ltr">&lt;/body&gt;<br>
+&lt;/html&gt;</p>
